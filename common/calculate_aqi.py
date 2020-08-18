@@ -31,7 +31,8 @@ class AQICalculator:
         for record in records:
             square_center = self.get_dot_center(record[3], record[4])
 
-            if not squares[square_center]:
+            if not squares.get(square_center, None):
+                squares[square_center] = {}
                 squares[square_center]['records'] = []
 
             squares[square_center]['records'].append(record)
