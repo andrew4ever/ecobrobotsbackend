@@ -13,6 +13,7 @@ class AQICalculator:
         self.cursor.execute("SELECT * FROM `sensor`")
         sensors = self.cursor.fetchall()
 
+        # get latest records
         records = []
         for sensor in sensors:
             if sensor[2] == 0:
@@ -27,15 +28,43 @@ class AQICalculator:
             if record:
                 records.append(record)
 
+        # arrange records to squares
         squares = {}
         for record in records:
             square_center = self.get_dot_center(record[3], record[4])
 
             if not squares.get(square_center, None):
-                squares[square_center] = {}
-                squares[square_center]['records'] = []
+                squares[square_center] = []
 
-            squares[square_center]['records'].append(record)
+            squares[square_center].append(record)
+
+        # get aqi for each square
+        for center, records in squares.items():
+            for record in records:
+                self.cursor.execute(
+                    "SELECT * FROM `sensor_value` WHERE `record_id` = {}".format(record[0]))
+                values = self.cursor.fetchall()
+
+                self.cursor.execute("SELECT * FROM `sensor_value_type`")
+                types = self.cursor.fetchall()
+                used_ids = [value_type[0]
+                            for value_type in types if value_type[-2] == 1]
+
+                # prepare dataset
+                sensor_values = {}
+                for value in values:
+                    if value[2] not in used_ids:
+                        continue
+
+                    if not sensor_values.get(value[2], None):
+                        sensor_values = {
+                            'type': value[2],
+                            'value': 0,
+                            'count': 0
+                        }
+
+                    sensor_values[value[2]]['count'] += 1
+                    sensor_values[value[2]]['value'] += value[3]
 
     def get_dot_center(self, lat, lon):
         start_lat = self._map_precision * math.floor(lat / self._map_precision)
