@@ -40,6 +40,8 @@ class AQICalculator:
 
         # get aqi for each square
         for center, records in squares.items():
+            # prepare dataset
+            sensor_values = {}
             for record in records:
                 self.cursor.execute(
                     "SELECT * FROM `sensor_value` WHERE `record_id` = {}".format(record[0]))
@@ -49,22 +51,26 @@ class AQICalculator:
                 types = self.cursor.fetchall()
                 used_ids = [value_type[0]
                             for value_type in types if value_type[-2] == 1]
+                types = {value_type[0]: value_type for value_type in types}
 
-                # prepare dataset
-                sensor_values = {}
                 for value in values:
                     if value[2] not in used_ids:
                         continue
 
                     if not sensor_values.get(value[2], None):
-                        sensor_values = {
+                        sensor_values[value[2]] = {
                             'type': value[2],
                             'value': 0,
                             'count': 0
                         }
 
-                    sensor_values[value[2]]['count'] += 1
                     sensor_values[value[2]]['value'] += value[3]
+                    sensor_values[value[2]]['count'] += 1
+
+            for value_type, value in sensor_values.items():
+                sensor_value = round(
+                    value['value'] / value['count'], types[value_type][3])
+                sensor_value = min(sensor_value, types[value_type][4])
 
     def get_dot_center(self, lat, lon):
         start_lat = self._map_precision * math.floor(lat / self._map_precision)
