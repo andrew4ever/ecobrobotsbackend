@@ -8,8 +8,12 @@ class AQICalculator:
 
         self._map_precision = 0.004
         self._map_round_digits = 6
+        self._min_index_value = 0
+        self._max_index_value = 500
 
     def calculate_aqi(self):
+        aqi_records = {}
+
         self.cursor.execute("SELECT * FROM `sensor`")
         sensors = self.cursor.fetchall()
 
@@ -67,10 +71,32 @@ class AQICalculator:
                     sensor_values[value[2]]['value'] += value[3]
                     sensor_values[value[2]]['count'] += 1
 
+            aqi_global = 0
+
             for value_type, value in sensor_values.items():
                 sensor_value = round(
                     value['value'] / value['count'], types[value_type][3])
                 sensor_value = min(sensor_value, types[value_type][4])
+
+                value_breakpoint = self.get_breakpoints(
+                    value_type, sensor_value)
+
+                if not value_breakpoint:
+                    continue
+
+                a = value_breakpoint[5] - value_breakpoint[4]
+                b = sensor_value - value_breakpoint[2]
+                c = value_breakpoint[3] - value_breakpoint[2]
+
+                aqi_for_type = a * b / c + value_breakpoint[2]
+                aqi_global = max(aqi_global, aqi_for_type)
+
+            aqi_global = min(self._max_index_value, aqi_global)
+            aqi_global = max(self._min_index_value, aqi_global)
+
+            aqi_records[center] = aqi_global
+
+        return aqi_records
 
     def get_dot_center(self, lat, lon):
         start_lat = self._map_precision * math.floor(lat / self._map_precision)
@@ -80,3 +106,13 @@ class AQICalculator:
             round(start_lat + self._map_precision / 2, self._map_round_digits),
             round(start_lon + self._map_precision / 2, self._map_round_digits)
         )
+
+    def get_breakpoints(self, value_type, sensor_value):
+        self.cursor.execute(
+            "SELECT * FROM `sensor_value_breakpoints` \
+                WHERE `sensor_value_type_id` = {} \
+                AND `value_min` < {} AND `value_max` > {}".format(
+                value_type, sensor_value, sensor_value
+            )
+        )
+        return self.cursor.fetchone()
