@@ -47,13 +47,12 @@
         "tags": ["areaAQI"],
         "parameters": [
           {
-            "name": "areaId",
+            "name": "areaCoords",
             "in": "query",
-            "description": "ID of the area",
+            "description": "Coords of the area",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
