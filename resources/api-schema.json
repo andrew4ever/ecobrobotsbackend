@@ -1,0 +1,126 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "ecobrobots"
+  },
+  "servers": [
+    {
+      "url": ""
+    }
+  ],
+  "paths": {
+    "/map": {
+      "get": {
+        "summary": "AQI for each recorded area",
+        "operationId": "listAQI",
+        "tags": ["aqiMap"],
+        "responses": {
+          "200": {
+            "description": "AQI for each recorded area",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Map"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/area": {
+      "get": {
+        "summary": "AQI for specific area",
+        "operationId": "areaAQI",
+        "tags": ["areaAQI"],
+        "parameters": [
+          {
+            "name": "areaId",
+            "in": "query",
+            "description": "ID of the area",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AQI for each recorded area",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Area"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Map": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Area"
+        }
+      },
+      "Area": {
+        "type": "object",
+        "required": ["id", "coords", "aqi"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "coords": {
+            "type": "string"
+          },
+          "aqi": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
