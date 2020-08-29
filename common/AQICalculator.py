@@ -1,7 +1,6 @@
 # This module is using old PHP backend.
 # In future old backend will be replaced by this new project and aqi calculator will be refactored
 
-from connect_remote_db import connect_remote_db
 import math
 
 
