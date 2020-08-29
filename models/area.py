@@ -1,9 +1,14 @@
 from app import db
+from datetime import datetime
 
 
-class Area(db.Model):
+class AreaModel(db.Model):
     __tablename__ = 'aqi-records'
 
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
     aqi = db.Column(
         db.Integer,
         index=False,
@@ -26,7 +31,8 @@ class Area(db.Model):
         db.DateTime,
         index=False,
         unique=False,
-        nullable=False
+        nullable=False,
+        default=datetime.now()
     )
 
     def __repr__(self):
