@@ -2,6 +2,13 @@
 # In future old backend will be replaced by this new project and aqi calculator will be refactored
 
 import math
+import mysql.connector
+
+
+def connect_remote_db(db_data):
+    database = mysql.connector.connect(**db_data)
+
+    return database
 
 
 class AQICalculator:
