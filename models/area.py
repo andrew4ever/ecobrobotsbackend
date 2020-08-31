@@ -16,13 +16,13 @@ class AreaModel(db.Model):
         nullable=False
     )
     latitude = db.Column(
-        db.Float,
+        db.String(16),
         index=False,
         unique=False,
         nullable=False
     )
     longitude = db.Column(
-        db.Float,
+        db.String(16),
         index=False,
         unique=False,
         nullable=False
@@ -40,3 +40,8 @@ class AreaModel(db.Model):
 
     def _string_coords(self):
         return str(self.latitude) + '-' + str(self.longitude)
+
+    def as_dict(self):
+        r = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        r['created'] = str(r['created'])
+        return r

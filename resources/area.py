@@ -7,12 +7,15 @@ class AreaResource(Resource):
     def get(self):
         area_coords = request.args.get('area_coords')
 
+        if not '-' in area_coords:
+            return {'code': 400, 'message': 'Invalid coordinate format'}, 400
+
         latitude, longitude = area_coords.split('-')
 
-        areas = AreaModel.query.filter_by(
-            latitude=latitude, longitude=longitude).limit(10).all()
+        area = AreaModel.query.filter_by(
+            latitude=latitude).filter_by(longitude=longitude).first()
 
-        if not areas:
+        if not area:
             return {'code': 404, 'message': 'Area not found'}, 404
 
-        return areas
+        return area.as_dict()
