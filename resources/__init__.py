@@ -1,2 +1,2 @@
-from resources import area
-from resources import map
+from resources.area import AreaResource
+from resources.map import Map

@@ -97,7 +97,7 @@ class AQICalculator:
             aqi_global = min(self._max_index_value, aqi_global)
             aqi_global = max(self._min_index_value, aqi_global)
 
-            aqi_records[center] = aqi_global
+            aqi_records[center] = round(aqi_global, 2)
 
         return aqi_records
 
