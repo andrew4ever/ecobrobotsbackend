@@ -42,7 +42,7 @@ for center, aqi in results.items():
                    "(aqi, latitude, longitude, created) "
                    "VALUES (%s, %s, %s, %s)")
 
-    data = (aqi, center[0], center[1], datetime.now())
+    data = (aqi, str(center[0]), str(center[1]), datetime.now())
 
     cursor.execute(add_records, data)
 
