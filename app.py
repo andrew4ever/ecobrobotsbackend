@@ -16,7 +16,7 @@ def create_app():
     app.config.from_object(Config())
 
     api = Api(app)
-    api.add_resource(AreaResource, '/area' '/area/<string:area_coords>')
+    api.add_resource(AreaResource, '/area')
     api.add_resource(Map, '/map')
 
     db.init_app(app)
