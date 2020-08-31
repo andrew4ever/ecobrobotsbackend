@@ -101,7 +101,7 @@
       },
       "Area": {
         "type": "object",
-        "required": ["id", "coords", "aqi"],
+        "required": ["id", "latitude", "longitude", "aqi"],
         "properties": {
           "id": {
             "type": "integer",
