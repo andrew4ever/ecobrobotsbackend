@@ -9,10 +9,10 @@ class AreaResource(Resource):
 
         latitude, longitude = area_coords.split('-')
 
-        area = AreaModel.query.filter_by(
-            latitude=latitude, longitude=longitude).first()
+        areas = AreaModel.query.filter_by(
+            latitude=latitude, longitude=longitude).limit(10).all()
 
-        if not area:
+        if not areas:
             return {'code': 404, 'message': 'Area not found'}, 404
 
-        return area
+        return areas

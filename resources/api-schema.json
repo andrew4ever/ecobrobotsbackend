@@ -42,7 +42,7 @@
     },
     "/area": {
       "get": {
-        "summary": "AQI for specific area",
+        "summary": "AQI records for specific area",
         "operationId": "areaAQI",
         "tags": ["areaAQI"],
         "parameters": [
@@ -58,12 +58,12 @@
         ],
         "responses": {
           "200": {
-            "description": "AQI for each recorded area",
+            "description": "AQI records for specific area",
             "headers": {},
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Area"
+                  "$ref": "#/components/schemas/Map"
                 }
               }
             }
