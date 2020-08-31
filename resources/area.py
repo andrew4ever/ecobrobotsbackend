@@ -12,10 +12,14 @@ class AreaResource(Resource):
 
         latitude, longitude = area_coords.split('-')
 
-        area = AreaModel.query.filter_by(
-            latitude=latitude).filter_by(longitude=longitude).first()
+        areas = AreaModel.query.filter_by(
+            latitude=latitude).filter_by(longitude=longitude).limit(10).all()
 
-        if not area:
+        if not areas:
             return {'code': 404, 'message': 'Area not found'}, 404
 
-        return area.as_dict()
+        areas_list = []
+        for area in areas:
+            areas_list.append(area.as_dict())
+
+        return areas_list
