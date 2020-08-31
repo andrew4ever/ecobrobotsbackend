@@ -16,3 +16,7 @@ Server is based on **Flask** and few extensions:
 - Flask SQLAlchemy
 
 Database: **MySQL**
+
+## Credits
+
+All credits to @andrew4ever
