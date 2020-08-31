@@ -5,15 +5,13 @@ from models import AreaModel
 
 class AreaResource(Resource):
     def get(self):
-        area_coords = request.args.get('area_coords')
+        latitude = request.args.get('latitude')
+        longitude = request.args.get('longitude')
 
-        if not '-' in area_coords:
-            return {'code': 400, 'message': 'Invalid coordinate format'}, 400
-
-        latitude, longitude = area_coords.split('-')
-
-        areas = AreaModel.query.filter_by(
-            latitude=latitude).filter_by(longitude=longitude).limit(10).all()
+        areas = AreaModel.query \
+            .filter_by(latitude=latitude) \
+            .filter_by(longitude=longitude) \
+            .limit(10).all()
 
         if not areas:
             return {'code': 404, 'message': 'Area not found'}, 404

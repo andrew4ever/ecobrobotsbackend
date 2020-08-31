@@ -47,9 +47,18 @@
         "tags": ["areaAQI"],
         "parameters": [
           {
-            "name": "area_coords",
+            "name": "latitude",
             "in": "query",
-            "description": "Coords of the area",
+            "description": "Latitude of the area",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "description": "Longitude of the area",
             "required": true,
             "schema": {
               "type": "string"
