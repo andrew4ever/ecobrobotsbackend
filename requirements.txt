@@ -3,3 +3,4 @@ flask-restful
 flask-sqlalchemy
 mysql-connector-python 
 python-dotenv
+python-crontab
