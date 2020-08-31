@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class AreaModel(db.Model):
-    __tablename__ = 'aqi-records'
+    __tablename__ = 'aqi_records'
 
     id = db.Column(
         db.Integer,
