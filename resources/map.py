@@ -5,6 +5,10 @@ from models import AreaModel
 
 class Map(Resource):
     def get(self):
-        areas = AreaModel.query.filter().all()
+        areas = AreaModel.query.order_by(AreaModel.created).all()
 
-        return areas
+        areas_list = []
+        for area in reversed(areas):
+            areas_list.append(area.as_dict())
+
+        return areas_list

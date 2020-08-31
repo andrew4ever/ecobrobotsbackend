@@ -98,7 +98,10 @@
             "type": "integer",
             "format": "int64"
           },
-          "coords": {
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
             "type": "string"
           },
           "aqi": {
