@@ -1,6 +1,10 @@
 from flask_restful import Resource
 
+from models import AreaModel
+
 
 class Map(Resource):
     def get(self):
-        return []
+        areas = AreaModel.query.filter().all()
+
+        return areas
