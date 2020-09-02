@@ -36,9 +36,9 @@ class AreaModel(db.Model):
     )
 
     def __repr__(self):
-        return '<Area {}>'.format(self._string_coords())
+        return '<Area {}>'.format(self.string_coords())
 
-    def _string_coords(self):
+    def string_coords(self):
         return str(self.latitude) + '-' + str(self.longitude)
 
     def as_dict(self):
