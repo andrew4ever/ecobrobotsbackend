@@ -17,6 +17,20 @@ Server is based on **Flask** and few extensions:
 
 Database: **MySQL**
 
+## Executing
+
+First of all, activate virtual environment with:
+
+`source venv/bin/activate`
+
+To start the server run:
+
+`python run.py`
+
+To start tests run:
+
+`python -m unittest tests`
+
 ## Credits
 
 All credits to @andrew4ever
