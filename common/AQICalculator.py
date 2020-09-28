@@ -2,6 +2,9 @@
 # In future old backend will be replaced by this new project and aqi calculator will be refactored
 
 import math
+from os import environ
+from datetime import datetime
+
 import mysql.connector
 
 
@@ -34,13 +37,19 @@ class AQICalculator:
                 continue
 
             self.cursor.execute(
-                "SELECT * FROM `sensor_record` WHERE `sensor_id` = {}".format(
+                "SELECT * FROM `sensor_record` WHERE `sensor_id` = {} ORDER BY `created_at` DESC".format(
                     sensor[0])
             )
             record = self.cursor.fetchone()
 
-            if record:
+            if not record:
+                continue
+
+            timedelta = datetime.now() - record[2]
+
+            if timedelta.days < int(environ.get('MAX_RECORD_DAYS')):
                 records.append(record)
+                print(sensor[0], record)
 
         # arrange records to squares
         squares = {}
@@ -52,6 +61,12 @@ class AQICalculator:
 
             squares[square_center].append(record)
 
+        self.cursor.execute("SELECT * FROM `sensor_value_type`")
+        types = self.cursor.fetchall()
+        used_ids = [value_type[0]
+                    for value_type in types if value_type[-2] == 1]
+        types = {value_type[0]: value_type for value_type in types}
+
         # get aqi for each square
         for center, records in squares.items():
             # prepare dataset
@@ -60,12 +75,6 @@ class AQICalculator:
                 self.cursor.execute(
                     "SELECT * FROM `sensor_value` WHERE `record_id` = {}".format(record[0]))
                 values = self.cursor.fetchall()
-
-                self.cursor.execute("SELECT * FROM `sensor_value_type`")
-                types = self.cursor.fetchall()
-                used_ids = [value_type[0]
-                            for value_type in types if value_type[-2] == 1]
-                types = {value_type[0]: value_type for value_type in types}
 
                 for value in values:
                     if value[2] not in used_ids:
