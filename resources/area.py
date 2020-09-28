@@ -12,7 +12,7 @@ class AreaResource(Resource):
         areas = AreaModel.query \
             .filter_by(latitude=latitude) \
             .filter_by(longitude=longitude) \
-            .limit(10).order_by(desc(AreaModel.created)).all()
+            .order_by(desc(AreaModel.created)).all()
 
         if not areas:
             return {'code': 404, 'message': 'Area not found'}, 404
