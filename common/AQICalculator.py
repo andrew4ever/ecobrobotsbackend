@@ -49,7 +49,6 @@ class AQICalculator:
 
             if timedelta.days < int(environ.get('MAX_RECORD_DAYS')):
                 records.append(record)
-                print(sensor[0], record)
 
         # arrange records to squares
         squares = {}
