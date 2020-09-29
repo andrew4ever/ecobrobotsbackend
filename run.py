@@ -14,8 +14,6 @@ job = cron.new(
 
 job.minute.every(15)
 cron.write()
-x = job.run()
-print(x)
 
 app = create_app()
 app.run(host='0.0.0.0', port=8080)
