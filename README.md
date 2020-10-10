@@ -29,8 +29,6 @@ To start the server run:
 
 To start tests run:
 
-`python -m unittest tests`
+`python -m unittest discover`
 
-## Credits
-
-All credits to @andrew4ever
+## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
