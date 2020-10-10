@@ -1,6 +1,6 @@
 import unittest
 
-from resources import AreaResource
+from resources import Area
 
 
 class AreaResourceTest(unittest.TestCase):
