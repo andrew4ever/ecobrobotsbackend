@@ -2,4 +2,4 @@ from dotenv import load_dotenv
 
 
 def load_config():
-    load_dotenv(override=True)
+    load_dotenv(dotenv_path='.env.dev', override=True)

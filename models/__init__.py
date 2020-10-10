@@ -1,1 +1,2 @@
-from models.area import AreaModel
+from models.Area import AreaModel
+from models.SensorData import SensorDataModel
