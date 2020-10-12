@@ -40,49 +40,49 @@ class SensorDataModel(db.Model):
         nullable=False
     )
     pm25 = db.Column(
-        db.Integer
+        db.String(16)
     )
     pm100 = db.Column(
-        db.Integer
+        db.String(16)
     )
     o31 = db.Column(
-        db.Integer
+        db.String(16)
     )
     o38 = db.Column(
-        db.Integer
+        db.String(16)
     )
     co = db.Column(
-        db.Integer
+        db.String(16)
     )
     so2 = db.Column(
-        db.Integer
+        db.String(16)
     )
     no2 = db.Column(
-        db.Integer
+        db.String(16)
     )
     temp = db.Column(
-        db.Integer
+        db.String(16)
     )
     humi = db.Column(
-        db.Integer
+        db.String(16)
     )
     press = db.Column(
-        db.Integer
+        db.String(16)
     )
     pm1 = db.Column(
-        db.Integer
+        db.String(16)
     )
     nh3 = db.Column(
-        db.Integer
+        db.String(16)
     )
     co2 = db.Column(
-        db.Integer
+        db.String(16)
     )
     rad = db.Column(
-        db.Integer
+        db.String(16)
     )
     sound = db.Column(
-        db.Integer
+        db.String(16)
     )
 
     def __repr__(self):
