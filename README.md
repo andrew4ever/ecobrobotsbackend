@@ -4,10 +4,6 @@ This is a new Python back-end for #brobots eco-project. Previous version was wri
 
 **#brobots eco-project** is a net of sensors that collect data about air quality in Brovary.
 
-## Note
-
-Currently the project depends on older back-end as it's receiving data from sensors. In future new version will fully replace older back-end.
-
 ## What's used
 
 Server is based on **Flask** and few extensions:
@@ -29,6 +25,6 @@ To start the server run:
 
 To start tests run:
 
-`python -m unittest discover`
+`python -m unittest tests`
 
 ## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
