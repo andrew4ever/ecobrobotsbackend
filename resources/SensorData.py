@@ -9,6 +9,20 @@ from models import SensorDataModel
 class SensorData(Resource):
     def get(self):
         args = list(dict(request.args).items())
+
+        try:
+            sensor_request = self.parse_request(args)
+
+            s = SensorDataModel(**sensor_request)
+            db.session.add(s)
+            db.session.commit()
+
+            return 'data stored', 200
+
+        except:
+            return 'bad request', 400
+
+    def parse_request(self, args):
         sensor_request = {}
         i = 0
 
@@ -32,8 +46,4 @@ class SensorData(Resource):
         del sensor_request['id']
         del sensor_request['date']
 
-        s = SensorDataModel(**sensor_request)
-        db.session.add(s)
-        db.session.commit()
-
-        return 'data stored', 200
+        return sensor_request
