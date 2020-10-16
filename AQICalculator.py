@@ -6,12 +6,15 @@ from sqlalchemy import desc
 
 from app import create_app
 from common import load_config
+from models import db
 from models import AreaModel, SensorDataModel, SensorValueTypeModel
 from models import SensorValueBreakpointsModel as Breakpoints
 
 
 class AQICalculator:
-    def __init__(self):
+    def __init__(self, db):
+        self.db = db
+
         self._map_precision = 0.004
         self._map_round_digits = 6
         self._min_index_value = 0
@@ -84,6 +87,8 @@ class AQICalculator:
 
             area = AreaModel(
                 latitude=center[0], longitude=center[1], aqi=aqi_global)
+            self.db.session.add(area)
+            self.db.session.commit()
 
     def get_dot_center(self, lat, lon):
         start_lat = self._map_precision * math.floor(lat / self._map_precision)
@@ -104,5 +109,5 @@ if __name__ == '__main__':
     app = create_app()
     app.app_context().push()
 
-    calc = AQICalculator()
+    calc = AQICalculator(db)
     result = calc.calculate_aqi()
