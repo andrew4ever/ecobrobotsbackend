@@ -16,15 +16,17 @@ Database: **MySQL**
 ## Executing
 
 First of all, activate virtual environment with:
-
 `source venv/bin/activate`
 
-To start the server run:
+Set the environment variable:
+`export ENVIRONMENT={DEVELOPMENT or PRODUCTION}`
 
+If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used
+
+To start the server run:
 `python run.py`
 
 To start tests run:
-
 `python -m unittest tests`
 
 ## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
