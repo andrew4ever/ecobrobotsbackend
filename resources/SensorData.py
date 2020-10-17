@@ -17,10 +17,10 @@ class SensorData(Resource):
             db.session.add(s)
             db.session.commit()
 
-            return 'data stored', 200
+            return {'code': 200, 'message': 'Data stored'}, 200
 
         except:
-            return 'bad request', 400
+            return {'code': 400, 'message': 'Bad request'}, 400
 
     def parse_request(self, args):
         sensor_request = {}
