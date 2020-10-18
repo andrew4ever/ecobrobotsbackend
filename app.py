@@ -8,7 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import DevConfig, ProdConfig
 
-
 db = SQLAlchemy()
 
 

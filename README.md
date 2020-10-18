@@ -19,7 +19,7 @@ First of all, activate virtual environment with:
 `source venv/bin/activate`
 
 Set the environment variables:
-`export ENVIRONMENT={DEVELOPMENT or PRODUCTION}`
+`export ENVIRONMENT={DEVELOPMENT or PRODUCTION}` and
 `export PYTHONPATH=$(pwd)`
 
 If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used
