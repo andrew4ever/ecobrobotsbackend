@@ -18,10 +18,12 @@ Database: **MySQL**
 First of all, activate virtual environment with:
 `source venv/bin/activate`
 
-Set the environment variable:
+Set the environment variables:
 `export ENVIRONMENT={DEVELOPMENT or PRODUCTION}`
+`export PYTHONPATH=$(pwd)`
 
 If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used
+`PYTHONPATH` is needed for `AQICalculator.py` to be executed on its own.
 
 To start the server run:
 `python run.py`

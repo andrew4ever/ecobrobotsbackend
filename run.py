@@ -4,6 +4,7 @@ from crontab import CronTab
 
 from app import create_app
 
+os.system('export PYTHONPATH=$(pwd)')
 cron = CronTab(user=True)
 
 job = cron.new(
