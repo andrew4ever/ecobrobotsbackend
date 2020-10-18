@@ -7,8 +7,8 @@ from app import create_app
 cron = CronTab(user=True)
 
 job = cron.new(
-    command='export PYTHONPATH={0} && cd {0} && {0}/venv/bin/python {0}/common/AQICalculator.py'
-    .format(os.getcwd())
+    command='export ENVIRONMENT={1} && export PYTHONPATH={0} && cd {0} && {0}/venv/bin/python {0}/common/AQICalculator.py'.format(
+        os.getcwd(), os.environ.get('ENVIRONMENT'))
 )
 job.minute.every(int(os.environ.get('DB_UPDATE_PERIOD_MINUTES')))
 cron.write()
