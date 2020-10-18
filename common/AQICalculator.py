@@ -30,7 +30,7 @@ class AQICalculator:
         for record in sensor_records:
             timedelta = datetime.now() - record.recorded
 
-            if timedelta.days < int(environ.get('MAX_RECORD_DAYS')):
+            if timedelta.days <= int(environ.get('MAX_RECORD_DAYS')):
                 records.append(record)
 
         squares = {}

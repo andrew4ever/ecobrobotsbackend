@@ -22,13 +22,16 @@ Set the environment variables:
 `export ENVIRONMENT={DEVELOPMENT or PRODUCTION}` and
 `export PYTHONPATH=$(pwd)`
 
-If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used
-`PYTHONPATH` is needed for `AQICalculator.py` to be executed on its own.
+If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used. `PYTHONPATH` is needed for `AQICalculator.py` to be executed on its own.
 
 To start the server run:
 `python run.py`
 
 To start tests run:
 `python -m unittest tests`
+
+## For WSL users
+
+I use WSL as my working system and I spent lots of time debugging this small thing: `cron` isn't started on WSL startup. You have to run `sudo service cron start` before working.
 
 ## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
