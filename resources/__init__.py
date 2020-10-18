@@ -1,2 +1,3 @@
-from resources.area import AreaResource
-from resources.map import Map
+from resources.Area import Area
+from resources.Map import Map
+from resources.SensorData import SensorData
