@@ -1,17 +1,25 @@
+from os import environ
+
 from flask import Flask
 from flask_cors import CORS
+from flask_cors.core import ensure_iterable
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from config import DevConfig as Config
+from config import DevConfig, ProdConfig
+
 
 db = SQLAlchemy()
 
 
 def create_app():
-    from resources import Area
-    from resources import Map
-    from resources import SensorData
+    from resources import Area, Map, SensorData
+
+    env = environ.get('ENVIRONMENT')
+    if env == 'DEVELOPMENT':
+        Config = DevConfig
+    else:
+        Config = ProdConfig
 
     app = Flask(__name__)
     app.config.from_object(Config())
