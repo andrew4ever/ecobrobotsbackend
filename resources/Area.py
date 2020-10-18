@@ -4,7 +4,7 @@ from sqlalchemy import desc
 from models import AreaModel
 
 
-class AreaResource(Resource):
+class Area(Resource):
     def get(self):
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')

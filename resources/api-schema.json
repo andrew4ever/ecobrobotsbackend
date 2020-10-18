@@ -89,6 +89,36 @@
           }
         }
       }
+    },
+    "/saveSensorData": {
+      "get": {
+        "summary": "Save data",
+        "operationId": "saveSensorData",
+        "tags": ["saveSensorData"],
+        "responses": {
+          "200": {
+            "description": "Data saved successfully",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerSuccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -118,6 +148,19 @@
             "format": "int32"
           },
           "created": {
+            "type": "string"
+          }
+        }
+      },
+      "AnswerSuccess": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
             "type": "string"
           }
         }

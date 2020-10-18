@@ -4,10 +4,6 @@ This is a new Python back-end for #brobots eco-project. Previous version was wri
 
 **#brobots eco-project** is a net of sensors that collect data about air quality in Brovary.
 
-## Note
-
-Currently the project depends on older back-end as it's receiving data from sensors. In future new version will fully replace older back-end.
-
 ## What's used
 
 Server is based on **Flask** and few extensions:
@@ -20,17 +16,19 @@ Database: **MySQL**
 ## Executing
 
 First of all, activate virtual environment with:
-
 `source venv/bin/activate`
 
-To start the server run:
+Set the environment variables:
+`export ENVIRONMENT={DEVELOPMENT or PRODUCTION}`
+`export PYTHONPATH=$(pwd)`
 
+If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used
+`PYTHONPATH` is needed for `AQICalculator.py` to be executed on its own.
+
+To start the server run:
 `python run.py`
 
 To start tests run:
-
 `python -m unittest tests`
 
-## Credits
-
-All credits to @andrew4ever
+## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
