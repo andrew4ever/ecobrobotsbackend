@@ -1,12 +1,12 @@
 from dotenv import load_dotenv
-from os import environ
+from os import environ, path
 
 
-def load_config():
+def load_config(env_dir=''):
     env = environ.get('ENVIRONMENT')
 
     if env == 'DEVELOPMENT':
-        load_dotenv(dotenv_path='.env.dev', override=True)
+        return load_dotenv(dotenv_path=path.join(env_dir, '.env.dev'), override=True)
 
     else:
-        load_dotenv(dotenv_path='.env', override=True)
+        return load_dotenv(dotenv_path=path.join(env_dir, '.env'), override=True)
