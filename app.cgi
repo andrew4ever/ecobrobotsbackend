@@ -5,6 +5,7 @@ from wsgiref.handlers import CGIHandler
 from os import getcwd
 from sys import path
 path.insert(0, getcwd())
+print("Content-Type: text/html\n\n")
 
 
 class ProxyFix(object):
