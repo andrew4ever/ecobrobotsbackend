@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/home/au402216/eco.brobots.org.ua/www/ecobrobotsbackend/venv/bin/python
 from run import create_app
 from wsgiref.handlers import CGIHandler
 
