@@ -15,20 +15,27 @@ Database: **MySQL**
 
 ## Executing
 
-First of all, activate virtual environment with:
+First of all, create your virtual environment and activate it with:
 `source venv/bin/activate`
+
+    I highly recommend using `virtualenv`, not `python -m venv`, as it creates `activate_this.py` that is needed for CGI
 
 Set the environment variables:
 `export ENVIRONMENT={DEVELOPMENT or PRODUCTION}` and
-`export PYTHONPATH=$(pwd)`
+`export PYTHONPATH=/path/to/project/root`
 
-If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used. `PYTHONPATH` is needed for `AQICalculator.py` to be executed on its own.
+If `ENVIRONMENT` variable is set to `DEVELOPMENT` the `.env.dev` file will be used. Otherwise, the `.env` is used. `PYTHONPATH` is needed for loading config and `AQICalculator.py` to be executed on its own.
 
 To start the server run:
 `python run.py`
 
 To start tests run:
 `python -m unittest tests`
+
+## When deploying as CGI
+
+Make sure `app.cgi` has access permissons set to **750**.
+Also in `app.cgi` change path to virtual environment.
 
 ## For WSL users
 
