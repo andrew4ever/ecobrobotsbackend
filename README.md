@@ -46,4 +46,8 @@ Few helpful links:
 
 I use WSL as my working system and I spent lots of time debugging this small thing: `cron` isn't started on WSL startup. You have to run `sudo service cron start` before working.
 
+## For VS Code users
+
+Don't use SSH connection feature in VS Code. It prevented my CGI app from working on server and made me spend hours of debugging.
+
 ## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
