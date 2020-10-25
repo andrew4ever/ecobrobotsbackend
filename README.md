@@ -34,10 +34,15 @@ To start tests run:
 
 ## When deploying as CGI
 
-Make sure `app.cgi` has access permissons set to **750**.
-Also in `app.cgi` change path to virtual environment.
+### Project permissions
 
-Few helpful links:
+Make sure `app.cgi` and project's have permissons set to **750**. Also change path to your virtual environment in `app.cgi`.
+
+### CGI file
+
+Sometimes after running `git pull` I get `Internal Server Error`. Removing the file and creating a new one natively on server can help. **Don't foget to set its permissions to 750**.
+
+### Helpful links
 
 - [Official Flask page](https://flask.palletsprojects.com/en/1.1.x/deploying/cgi/)
 - [How to use with venv](https://homes.cs.washington.edu/~yjzhang/notes/python_web.html)
