@@ -10,14 +10,14 @@ from models import SensorDataModel
 
 class SensorData(Resource):
     def get(self):
-        args = request.query_string
-        if not args:
-            args = environ.get('QUERY_STRING')  # if using CGI server
-
-        args = parse_qs(args).items()
-        args = [(str(i[0], 'utf-8'), str(i[1][0], 'utf-8')) for i in args]
-
         try:
+            args = request.query_string
+            if not args:
+                args = environ.get('QUERY_STRING')  # if using CGI server
+
+            args = parse_qs(args).items()
+            args = [(str(i[0], 'utf-8'), str(i[1][0], 'utf-8')) for i in args]
+
             sensor_request = self.parse_request(args)
 
             s = SensorDataModel(**sensor_request)
