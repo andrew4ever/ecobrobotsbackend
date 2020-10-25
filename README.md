@@ -39,7 +39,7 @@ Also in `app.cgi` change path to virtual environment.
 
 Few helpful links:
 
-- [Official Flask page](https://homes.cs.washington.edu/~yjzhang/notes/python_web.html)
+- [Official Flask page](https://flask.palletsprojects.com/en/1.1.x/deploying/cgi/)
 - [How to use with venv](https://homes.cs.washington.edu/~yjzhang/notes/python_web.html)
 
 ## For WSL users
