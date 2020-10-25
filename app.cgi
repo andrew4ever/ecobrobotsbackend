@@ -1,10 +1,11 @@
 #!/usr/bin/python3
-from run import create_app
 from wsgiref.handlers import CGIHandler
-
 from os import getcwd
-from sys import path
-path.insert(0, getcwd())
+
+activate_this = '{0}/venv/bin/activate_this.py'.format(getcwd())
+exec(open(activate_this).read(), dict(__file__=activate_this))
+
+from run import create_app
 print("Content-Type: text/html\n\n")
 
 
