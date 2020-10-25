@@ -15,7 +15,7 @@ class SensorData(Resource):
             args = environ.get('QUERY_STRING')  # if using CGI server
 
         args = parse_qs(args).items()
-        args = [(i[0].decode("utf-8"), i[1][0].decode("utf-8")) for i in args]
+        args = [(str(i[0], 'utf-8'), str(i[1][0], 'utf-8')) for i in args]
 
         try:
             sensor_request = self.parse_request(args)
