@@ -1,8 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.6
 from wsgiref.handlers import CGIHandler
-from os import getcwd
 
-activate_this = '{0}/venv/bin/activate_this.py'.format(getcwd())
+activate_this = '/home/au402216/eco.brobots.org.ua/www/ecobrobotsbackend/venv/bin/activate_this.py'
 exec(open(activate_this).read(), dict(__file__=activate_this))
 
 from run import create_app
