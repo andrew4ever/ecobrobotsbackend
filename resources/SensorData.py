@@ -21,7 +21,7 @@ class SensorData(Resource):
                 args = [(i[0].decode('utf-8'), i[1][0].decode('utf-8'))
                         for i in args]
             except:
-                pass
+                args = [(i[0], i[1][0]) for i in args]
 
             sensor_request = self.parse_request(args)
 
