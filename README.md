@@ -37,6 +37,11 @@ To start tests run:
 Make sure `app.cgi` has access permissons set to **750**.
 Also in `app.cgi` change path to virtual environment.
 
+Few helpful links:
+
+- [Official Flask page](https://homes.cs.washington.edu/~yjzhang/notes/python_web.html)
+- [How to use with venv](https://homes.cs.washington.edu/~yjzhang/notes/python_web.html)
+
 ## For WSL users
 
 I use WSL as my working system and I spent lots of time debugging this small thing: `cron` isn't started on WSL startup. You have to run `sudo service cron start` before working.
