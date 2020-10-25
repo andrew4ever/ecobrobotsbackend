@@ -25,7 +25,7 @@ def create_app():
     app.config.from_object(Config())
     CORS(app)
     logging.basicConfig(
-        # filename='app.log',
+        filename='app.log',
         level=logging.INFO
     )
 

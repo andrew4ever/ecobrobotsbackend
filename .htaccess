@@ -1,4 +1,4 @@
 RewriteEngine On
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ ecobrobotsbackend/app.cgi/$1 [L]
+RewriteRule ^(.+)$ ecobrobotsbackend/app.cgi/$1 [L]
