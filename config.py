@@ -3,7 +3,7 @@ from os import environ
 
 from common import load_config
 
-load_config()
+load_config(environ.get('PYTHONPATH', ''))
 
 
 class Config:

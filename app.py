@@ -1,3 +1,4 @@
+import logging
 from os import environ
 
 from flask import Flask
@@ -23,6 +24,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
     CORS(app)
+    logging.basicConfig(
+        filename='app.log',
+        level=logging.INFO
+    )
 
     api = Api(app)
     api.add_resource(Area, '/area')

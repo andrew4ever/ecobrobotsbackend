@@ -1,4 +1,6 @@
 from datetime import datetime
+from os import environ
+from urllib.parse import parse_qs
 
 from app import db
 from flask import request
@@ -8,9 +10,19 @@ from models import SensorDataModel
 
 class SensorData(Resource):
     def get(self):
-        args = list(dict(request.args).items())
-
         try:
+            args = request.query_string
+            if not args:
+                args = environ.get('QUERY_STRING')  # if using CGI server
+
+            args = parse_qs(args).items()
+
+            try:
+                args = [(i[0].decode('utf-8'), i[1][0].decode('utf-8'))
+                        for i in args]
+            except:
+                args = [(i[0], i[1][0]) for i in args]
+
             sensor_request = self.parse_request(args)
 
             s = SensorDataModel(**sensor_request)
