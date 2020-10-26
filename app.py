@@ -32,7 +32,7 @@ def create_app():
     api = Api(app)
     api.add_resource(Area, '/area')
     api.add_resource(Map, '/map')
-    api.add_resource(SensorData, '/saveSensorData')
+    api.add_resource(SensorData, '/api/v1/saveSensorData')
 
     db.init_app(app)
 
