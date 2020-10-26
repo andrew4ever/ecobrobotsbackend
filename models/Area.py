@@ -34,6 +34,66 @@ class AreaModel(db.Model):
         nullable=False,
         default=datetime.now()
     )
+    pm25 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    pm100 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    o31 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    o38 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    co = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    so2 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    no2 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    temp = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    humi = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    press = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    pm1 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    nh3 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    co2 = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    rad = db.Column(
+        db.String(16),
+        nullable=True
+    )
+    sound = db.Column(
+        db.String(16),
+        nullable=True
+    )
 
     def __repr__(self):
         return '<Area {}>'.format(self.string_coords())

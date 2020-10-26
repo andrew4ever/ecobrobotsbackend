@@ -60,6 +60,7 @@ class AQICalculator:
                     values[t]['count'] += 1
 
             aqi_global = 0
+            values_global = {}
 
             for t, value in values.items():
                 t_data = SensorValueTypeModel.query.filter(
@@ -81,12 +82,13 @@ class AQICalculator:
 
                 current_value = a * b / c + value_breakpoint.value_min
                 aqi_global = max(current_value, aqi_global)
+                values_global[t] = sensor_value
 
             aqi_global = min(self._max_index_value, aqi_global)
             aqi_global = max(self._min_index_value, aqi_global)
 
             area = AreaModel(
-                latitude=center[0], longitude=center[1], aqi=aqi_global)
+                latitude=center[0], longitude=center[1], aqi=aqi_global, **values_global)
             self.db.session.add(area)
             self.db.session.commit()
 
