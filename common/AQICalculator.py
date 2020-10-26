@@ -70,7 +70,8 @@ class AQICalculator:
 
                 sensor_value = round(
                     value['value'] / value['count'], t_data.round_digits)
-                sensor_value = min(sensor_value, t_data.max_possible_value)
+                sensor_value = min(sensor_value, float(
+                    t_data.max_possible_value))
                 values_global[t] = sensor_value
 
                 if t not in self._aqi_value_types:
