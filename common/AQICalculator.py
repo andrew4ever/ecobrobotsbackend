@@ -19,6 +19,8 @@ class AQICalculator:
         self._map_round_digits = 6
         self._min_index_value = 0
         self._max_index_value = 500
+        self._value_types = ['pm25', 'pm100', 'o31', 'o38', 'co', 'so2',
+                             'no2', 'temp', 'humi', 'press', 'pm1', 'nh3', 'co2', 'rad', 'sound']
         self._aqi_value_types = ['pm25', 'pm100',
                                  'o31', 'o38', 'co', 'so2', 'no2']
 
@@ -47,7 +49,7 @@ class AQICalculator:
             values = {}
 
             for record in records:
-                for t in self._aqi_value_types:
+                for t in self._value_types:
                     val = getattr(record, t)
 
                     if not values.get(t):
@@ -64,11 +66,15 @@ class AQICalculator:
 
             for t, value in values.items():
                 t_data = SensorValueTypeModel.query.filter(
-                    SensorValueTypeModel.type == t).first()
+                    SensorValueTypeModel.name == t).first()
 
                 sensor_value = round(
                     value['value'] / value['count'], t_data.round_digits)
                 sensor_value = min(sensor_value, t_data.max_possible_value)
+                values_global[t] = sensor_value
+
+                if t not in self._aqi_value_types:
+                    continue
 
                 value_breakpoint = self.get_breakpoints(
                     t_data.id, sensor_value)
@@ -82,7 +88,6 @@ class AQICalculator:
 
                 current_value = a * b / c + value_breakpoint.value_min
                 aqi_global = max(current_value, aqi_global)
-                values_global[t] = sensor_value
 
             aqi_global = min(self._max_index_value, aqi_global)
             aqi_global = max(self._min_index_value, aqi_global)
