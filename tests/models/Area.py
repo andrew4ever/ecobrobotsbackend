@@ -7,8 +7,23 @@ class AreaModelTest(unittest.TestCase):
     def test_as_dict(self):
         data = {
             'aqi': 42,
+            'co': None,
+            'co2': None,
+            'humi': None,
             'latitude': '50.442',
-            'longitude': '30.91'
+            'longitude': '30.91',
+            'nh3': None,
+            'no2': None,
+            'o31': None,
+            'o38': None,
+            'pm1': None,
+            'pm100': None,
+            'pm25': None,
+            'press': None,
+            'rad': None,
+            'so2': None,
+            'sound': None,
+            'temp': None
         }
 
         result = AreaModel(**data).as_dict()
