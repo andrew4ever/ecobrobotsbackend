@@ -77,6 +77,10 @@ class AQICalculator:
                 if t not in self._aqi_value_types:
                     continue
 
+                if math.isnan(sensor_value):
+                    values_global[t] = None
+                    continue
+
                 value_breakpoint = self.get_breakpoints(
                     t_data.id, sensor_value)
 
