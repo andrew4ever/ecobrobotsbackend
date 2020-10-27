@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import environ
 
 from flask_restful import Resource
@@ -9,7 +9,10 @@ from models import AreaModel
 
 class Map(Resource):
     def get(self):
-        areas = AreaModel.query.order_by(desc(AreaModel.created)).all()
+        maxdate = datetime.now() - timedelta(days=int(environ.get('MAX_RECORD_DAYS')))
+
+        areas = AreaModel.query.order_by(desc(AreaModel.created)).filter(
+            AreaModel.created >= maxdate).all()
 
         areas_coords = []
         areas_list = []
@@ -18,12 +21,6 @@ class Map(Resource):
             a = area.as_dict()
 
             if (a['latitude'], a['longitude']) in areas_coords:
-                continue
-
-            timedelta = datetime.now() - \
-                datetime.strptime(a['created'], '%Y-%m-%d %H:%M:%S')
-
-            if timedelta.days >= int(environ.get('MAX_RECORD_DAYS')):
                 continue
 
             areas_coords.append((a['latitude'], a['longitude']))
