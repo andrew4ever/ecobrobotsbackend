@@ -1,8 +1,12 @@
-# #brobots eco-project backend
+# #brobots eco backend
 
-This is a new Python back-end for #brobots eco-project. Previous version was written in PHP and had major flaws.
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/ecobrobotsbackend?style=flat&logo=github&labelColor=181717&color=F8F8F5)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andrew4ever/ecobrobotsbackend/unit-tests?style=flat&logo=github&labelColor=181717&color=brightgreen)
+[![#brobots eco website](https://img.shields.io/badge/%23brobots-eco-fff000)](http://eco.brobots.org.ua)
 
-**#brobots eco-project** is a net of sensors that collect data about air quality in Brovary.
+This is a new Python back-end for #brobots eco. Previous version was written in PHP and had major flaws.
+
+**#brobots eco** is a net of sensors that collect data about air quality in Brovary.
 
 ## What's used
 
@@ -55,4 +59,4 @@ I use WSL as my working system and I spent lots of time debugging this small thi
 
 Don't use SSH connection feature in VS Code. It prevented my CGI app from working on server and made me spend hours of debugging.
 
-## [eco-project frontend](https://github.com/andrew4ever/ecobrobotsfrontend)
+## [eco frontend](https://github.com/andrew4ever/ecobrobotsfrontend)

@@ -90,7 +90,7 @@
         }
       }
     },
-    "/saveSensorData": {
+    "/api/v1/saveSensorData": {
       "get": {
         "summary": "Save data",
         "operationId": "saveSensorData",
@@ -98,6 +98,36 @@
         "responses": {
           "200": {
             "description": "Data saved successfully",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerSuccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "summary": "Check if server is ok",
+        "operationId": "ping",
+        "tags": ["ping"],
+        "responses": {
+          "200": {
+            "description": "Server is ok",
             "headers": {},
             "content": {
               "application/json": {
