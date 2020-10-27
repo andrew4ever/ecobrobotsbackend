@@ -1,5 +1,8 @@
 # #brobots eco-project backend
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/ecobrobotsbackend?style=flat&logo=github&labelColor=181717&color=F8F8F5)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andrew4ever/ecobrobotsbackend/unit-tests?style=flat&logo=github&labelColor=181717&color=1ED760)
+
 This is a new Python back-end for #brobots eco-project. Previous version was written in PHP and had major flaws.
 
 **#brobots eco-project** is a net of sensors that collect data about air quality in Brovary.
