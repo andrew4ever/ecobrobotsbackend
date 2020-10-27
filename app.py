@@ -13,7 +13,7 @@ db = SQLAlchemy()
 
 
 def create_app():
-    from resources import Area, Map, SensorData
+    from resources import Area, Map, Ping, SensorData
 
     env = environ.get('ENVIRONMENT')
     if env == 'DEVELOPMENT':
@@ -33,6 +33,7 @@ def create_app():
     api.add_resource(Area, '/area')
     api.add_resource(Map, '/map')
     api.add_resource(SensorData, '/api/v1/saveSensorData')
+    api.add_resource(Ping, '/ping')
 
     db.init_app(app)
 
