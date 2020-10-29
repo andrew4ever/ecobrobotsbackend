@@ -4,7 +4,7 @@ from wsgiref.handlers import CGIHandler
 activate_this = '/home/au402216/eco.brobots.org.ua/www/ecobrobotsbackend/venv/bin/activate_this.py'
 exec(open(activate_this).read(), dict(__file__=activate_this))
 
-from run import create_app
+from app import create_app
 print("Content-Type: text/html\n\n")
 
 
