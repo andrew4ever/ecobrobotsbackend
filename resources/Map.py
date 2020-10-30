@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 from os import environ
 
+from common.convert_types_to_names import convert_types_to_names
 from flask_restful import Resource
-from sqlalchemy import desc
-
 from models import AreaModel
+from sqlalchemy import desc
 
 
 class Map(Resource):
@@ -18,12 +18,10 @@ class Map(Resource):
         areas_list = []
 
         for area in areas:
-            a = area.as_dict()
-
-            if (a['latitude'], a['longitude']) in areas_coords:
+            if (area.latitude, area.longitude) in areas_coords:
                 continue
 
-            areas_coords.append((a['latitude'], a['longitude']))
-            areas_list.append(area.as_dict())
+            areas_coords.append((area.latitude, area.longitude))
+            areas_list.append(convert_types_to_names(area))
 
         return areas_list
