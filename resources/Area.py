@@ -4,6 +4,7 @@ from urllib.parse import parse_qs
 from flask_restful import Resource, request
 from models import AreaModel
 from sqlalchemy import desc
+from common.convert_types_to_names import convert_types_to_names
 
 
 class Area(Resource):
@@ -36,6 +37,6 @@ class Area(Resource):
 
         areas_list = []
         for area in areas:
-            areas_list.append(area.as_dict())
+            areas_list.append(convert_types_to_names(area))
 
         return areas_list
