@@ -66,7 +66,7 @@ class AQICalculator:
 
             for t, value in values.items():
                 t_data = SensorValueTypeModel.query.filter(
-                    SensorValueTypeModel.name == t).first()
+                    SensorValueTypeModel.type == t).first()
 
                 sensor_value = round(
                     value['value'] / value['count'], t_data.round_digits)
