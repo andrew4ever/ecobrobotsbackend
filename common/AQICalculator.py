@@ -94,6 +94,9 @@ class AQICalculator:
                 current_value = a * b / c + value_breakpoint.value_min
                 aqi_global = max(current_value, aqi_global)
 
+                # save AQI value for values used in AQI
+                values_global[t] = current_value
+
             aqi_global = min(self._max_index_value, aqi_global)
             aqi_global = max(self._min_index_value, aqi_global)
 
