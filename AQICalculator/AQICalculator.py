@@ -5,8 +5,8 @@ from os import environ
 from sqlalchemy import desc
 
 from app import create_app
+from app import db
 from common import load_config
-from models import db
 from models import AreaModel, SensorDataModel, SensorValueTypeModel
 from models import SensorValueBreakpointsModel as Breakpoints
 
@@ -15,7 +15,6 @@ class AQICalculator:
     def __init__(self, db):
         self.db = db
 
-        self._map_precision = 0.004
         self._map_round_digits = 6
         self._min_index_value = 0
         self._max_index_value = 500
@@ -68,11 +67,14 @@ class AQICalculator:
                 t_data = SensorValueTypeModel.query.filter(
                     SensorValueTypeModel.type == t).first()
 
+                if not t_data:
+                    continue
+
                 sensor_value = round(
                     value['value'] / value['count'], t_data.round_digits)
                 sensor_value = min(sensor_value, float(
                     t_data.max_possible_value))
-                values_global[t] = sensor_value
+                values_global[t] = round(sensor_value, 2)
 
                 if t not in self._aqi_value_types:
                     continue
@@ -95,7 +97,7 @@ class AQICalculator:
                 aqi_global = max(current_value, aqi_global)
 
                 # save AQI value for values used in AQI
-                values_global[t] = current_value
+                values_global[t] = round(current_value, 2)
 
             aqi_global = min(self._max_index_value, aqi_global)
             aqi_global = max(self._min_index_value, aqi_global)
@@ -106,13 +108,7 @@ class AQICalculator:
             self.db.session.commit()
 
     def get_dot_center(self, lat, lon):
-        start_lat = self._map_precision * math.floor(lat / self._map_precision)
-        start_lon = self._map_precision * math.floor(lon / self._map_precision)
-
-        return (
-            round(start_lat + self._map_precision / 2, self._map_round_digits),
-            round(start_lon + self._map_precision / 2, self._map_round_digits)
-        )
+        return round(lat, self._map_round_digits), round(lon, self._map_round_digits)
 
     def get_breakpoints(self, value_type, sensor_value):
         return Breakpoints.query.filter(Breakpoints.value_min <= sensor_value, Breakpoints.value_max >=

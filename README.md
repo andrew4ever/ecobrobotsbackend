@@ -22,7 +22,7 @@ Database: **MySQL**
 First of all, create your virtual environment and activate it with:
 `source venv/bin/activate`
 
-    I highly recommend using `virtualenv`, not `python -m venv`, as it creates `activate_this.py` that is needed for CGI
+> I highly recommend using `virtualenv`, not `python -m venv`, as it creates `activate_this.py` that is needed for CGI
 
 Set the environment variables:
 `export ENVIRONMENT={DEVELOPMENT or PRODUCTION}` and
