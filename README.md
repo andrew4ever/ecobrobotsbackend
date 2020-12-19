@@ -4,7 +4,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/brobots-hub/ecobrobotsbackend/unit-tests?style=flat&logo=github&labelColor=181717&color=brightgreen)
 [![#brobots eco website](https://img.shields.io/badge/%23brobots-eco-fff000)](http://eco.brobots.org.ua)
 
-This is a new Python back-end for #brobots eco. Previous version was written in PHP and had major flaws.
+This is a new Python backend for #brobots eco. Previous version was written in PHP and had major flaws.
 
 **#brobots eco** is a net of sensors that collect data about air quality in Brovary.
 
