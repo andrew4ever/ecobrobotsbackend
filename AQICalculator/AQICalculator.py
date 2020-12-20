@@ -108,7 +108,7 @@ class AQICalculator:
             self.db.session.commit()
 
     def get_dot_center(self, lat, lon):
-        return round(lat, self._map_round_digits), round(lon, self._map_round_digits)
+        return round(lat, self._map_round_digits, 3), round(lon, self._map_round_digits, 3)
 
     def get_breakpoints(self, value_type, sensor_value):
         return Breakpoints.query.filter(Breakpoints.value_min <= sensor_value, Breakpoints.value_max >=
