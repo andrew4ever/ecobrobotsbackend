@@ -3,7 +3,6 @@ from os import environ
 
 from flask import Flask
 from flask_cors import CORS
-from flask_cors.core import ensure_iterable
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
@@ -42,8 +41,3 @@ def create_app():
         db.create_all()
 
     return app
-
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run(host='0.0.0.0', port=8080)
