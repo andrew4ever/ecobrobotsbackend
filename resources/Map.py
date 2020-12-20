@@ -9,7 +9,7 @@ from sqlalchemy import desc
 
 class Map(Resource):
     def get(self):
-        maxdate = datetime.now() - timedelta(days=int(environ.get('MAX_RECORD_DAYS')))
+        maxdate = datetime.now() - timedelta(hours=int(environ.get('MAX_RECORD_HOURS')))
 
         areas = AreaModel.query.order_by(desc(AreaModel.created)).filter(
             AreaModel.created >= maxdate).all()
