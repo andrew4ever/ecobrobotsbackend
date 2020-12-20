@@ -15,7 +15,7 @@ class AQICalculator:
     def __init__(self, db):
         self.db = db
 
-        self._map_round_digits = 6
+        self._map_round_digits = 3
         self._min_index_value = 0
         self._max_index_value = 500
         self._value_types = ['pm25', 'pm100', 'o31', 'o38', 'co', 'so2',
@@ -31,7 +31,7 @@ class AQICalculator:
         for record in sensor_records:
             timedelta = datetime.now() - record.recorded
 
-            if timedelta.days <= int(environ.get('MAX_RECORD_DAYS')):
+            if (timedelta.seconds // 3600) <= int(environ.get('MAX_RECORD_HOURS')):
                 records.append(record)
 
         squares = {}
@@ -108,7 +108,7 @@ class AQICalculator:
             self.db.session.commit()
 
     def get_dot_center(self, lat, lon):
-        return round(lat, self._map_round_digits, 3), round(lon, self._map_round_digits, 3)
+        return round(lat, self._map_round_digits), round(lon, self._map_round_digits)
 
     def get_breakpoints(self, value_type, sensor_value):
         return Breakpoints.query.filter(Breakpoints.value_min <= sensor_value, Breakpoints.value_max >=
