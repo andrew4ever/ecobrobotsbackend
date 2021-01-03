@@ -7,6 +7,7 @@ class AreaModelTest(unittest.TestCase):
     def test_as_dict(self):
         data = {
             'aqi': 42,
+            'sensor_id': '123456789',
             'co': None,
             'co2': None,
             'humi': None,
