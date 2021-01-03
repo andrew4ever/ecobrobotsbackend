@@ -41,7 +41,7 @@ class AQICalculator:
             record_aqi = min(self._max_index_value, record_aqi)
             record_aqi = max(self._min_index_value, record_aqi)
 
-            self.save_area_data(record_aqi, values)
+            self.save_area_data(record_aqi, values, record.internal_id)
 
     def get_latest_records(self):
         sensors = SensorModel.query.all()
@@ -100,7 +100,7 @@ class AQICalculator:
         return Breakpoints.query.filter(Breakpoints.value_min <= sensor_value, Breakpoints.value_max >=
                                         sensor_value, Breakpoints.sensor_value_type_id == value_type).first()
 
-    def save_area_data(self, record_aqi, values):
+    def save_area_data(self, record_aqi, values, sensor_id):
         v = {}
         for key in values:
             if not isinstance(key, str):
@@ -110,7 +110,8 @@ class AQICalculator:
 
         area = AreaModel(
             aqi=record_aqi,
-            **v
+            sensor_id=sensor_id,
+            ** v
         )
         self.db.session.add(area)
         self.db.session.commit()

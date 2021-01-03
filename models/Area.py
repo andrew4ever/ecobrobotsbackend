@@ -15,6 +15,12 @@ class AreaModel(db.Model):
         unique=False,
         nullable=False
     )
+    sensor_id = db.Column(
+        db.String(16),
+        index=False,
+        unique=False,
+        nullable=False
+    )
     latitude = db.Column(
         db.String(16),
         index=False,
