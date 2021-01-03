@@ -51,6 +51,9 @@ class AQICalculator:
             record = SensorDataModel.query.order_by(SensorDataModel.recorded.desc()).filter_by(
                 internal_id=sensor.external_id).first()
 
+            if not record:
+                continue
+
             timedelta = datetime.now() - record.recorded
             if (timedelta.seconds // 3600) <= int(environ.get('MAX_RECORD_HOURS')):
                 latest_records.append(record)
