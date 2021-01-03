@@ -1,21 +1,17 @@
-import math
 from datetime import datetime
 from os import environ
 
-from sqlalchemy import desc
-
-from app import create_app
-from app import db
+from app import create_app, db
 from common import load_config
-from models import AreaModel, SensorDataModel, SensorValueTypeModel
+from models import AreaModel, SensorDataModel, SensorModel
 from models import SensorValueBreakpointsModel as Breakpoints
+from models import SensorValueTypeModel
 
 
 class AQICalculator:
     def __init__(self, db):
         self.db = db
 
-        self._map_round_digits = 3
         self._min_index_value = 0
         self._max_index_value = 500
         self._value_types = ['pm25', 'pm100', 'o31', 'o38', 'co', 'so2',
@@ -23,96 +19,98 @@ class AQICalculator:
         self._aqi_value_types = ['pm25', 'pm100',
                                  'o31', 'o38', 'co', 'so2', 'no2']
 
-    def calculate_aqi(self):
-        sensor_records = SensorDataModel.query.order_by(
-            desc(SensorDataModel.recorded)).all()
+    def execute(self):
+        latest_records = self.get_latest_records()
 
-        records = []
-        for record in sensor_records:
+        for record in latest_records:
+            if not record:
+                continue
+
+            record_aqi = 0
+            values = self.check_record_limits(record)
+
+            for value_type, value in values.items():
+                current_aqi = self.calculate_aqi(value_type, value)
+
+                if isinstance(value_type, SensorValueTypeModel) \
+                        and value_type.type in self._aqi_value_types:
+                    record_aqi = round(max(current_aqi, record_aqi), 3)
+                    values[value_type] = round(current_aqi, 3)
+                    # save AQI value for values used in AQI
+
+            record_aqi = min(self._max_index_value, record_aqi)
+            record_aqi = max(self._min_index_value, record_aqi)
+
+            self.save_area_data(record_aqi, values)
+
+    def get_latest_records(self):
+        sensors = SensorModel.query.all()
+
+        latest_records = []
+        for sensor in sensors:
+            record = SensorDataModel.query.order_by(SensorDataModel.recorded.desc()).filter_by(
+                internal_id=sensor.external_id).first()
+
             timedelta = datetime.now() - record.recorded
-
             if (timedelta.seconds // 3600) <= int(environ.get('MAX_RECORD_HOURS')):
-                records.append(record)
+                latest_records.append(record)
 
-        squares = {}
-        for record in records:
-            center = self.get_dot_center(
-                float(record.latitude), float(record.longitude))
+        return latest_records
 
-            if not squares.get(center):
-                squares[center] = []
+    def check_record_limits(self, record):
+        values = record.as_dict()
+        result = {}
 
-            squares[center].append(record)
+        for value_type in self._value_types:
+            type_data = SensorValueTypeModel.query.filter(
+                SensorValueTypeModel.type == value_type).first()
 
-        for center, records in squares.items():
-            values = {}
+            if values.get(value_type, None):
+                result[type_data] = min(
+                    float(values[value_type]),
+                    float(type_data.max_possible_value)
+                )
 
-            for record in records:
-                for t in self._value_types:
-                    val = getattr(record, t)
+        result['latitude'] = values['latitude']
+        result['longitude'] = values['longitude']
+        return result
 
-                    if not values.get(t):
-                        values[t] = {
-                            'value': 0,
-                            'count': 0
-                        }
+    def calculate_aqi(self, value_type, value):
+        if not isinstance(value_type, SensorValueTypeModel)\
+                or not value_type.type in self._value_types:
+            return False
 
-                    values[t]['value'] += float(val)
-                    values[t]['count'] += 1
+        value_breakpoint = self.get_breakpoints(
+            value_type.id, value)
 
-            aqi_global = 0
-            values_global = {}
+        if not value_breakpoint:
+            return False
 
-            for t, value in values.items():
-                t_data = SensorValueTypeModel.query.filter(
-                    SensorValueTypeModel.type == t).first()
+        a = value_breakpoint.aqi_max - value_breakpoint.aqi_min
+        b = float(value) - value_breakpoint.value_min
+        c = value_breakpoint.value_max - value_breakpoint.value_min
 
-                if not t_data:
-                    continue
-
-                sensor_value = round(
-                    value['value'] / value['count'], t_data.round_digits)
-                sensor_value = min(sensor_value, float(
-                    t_data.max_possible_value))
-                values_global[t] = round(sensor_value, 2)
-
-                if t not in self._aqi_value_types:
-                    continue
-
-                if math.isnan(sensor_value):
-                    values_global[t] = None
-                    continue
-
-                value_breakpoint = self.get_breakpoints(
-                    t_data.id, sensor_value)
-
-                if not value_breakpoint:
-                    continue
-
-                a = value_breakpoint.aqi_max - value_breakpoint.aqi_min
-                b = sensor_value - value_breakpoint.value_min
-                c = value_breakpoint.value_max - value_breakpoint.value_min
-
-                current_value = a * b / c + value_breakpoint.value_min
-                aqi_global = max(current_value, aqi_global)
-
-                # save AQI value for values used in AQI
-                values_global[t] = round(current_value, 2)
-
-            aqi_global = min(self._max_index_value, aqi_global)
-            aqi_global = max(self._min_index_value, aqi_global)
-
-            area = AreaModel(
-                latitude=center[0], longitude=center[1], aqi=aqi_global, **values_global)
-            self.db.session.add(area)
-            self.db.session.commit()
-
-    def get_dot_center(self, lat, lon):
-        return round(lat, self._map_round_digits), round(lon, self._map_round_digits)
+        current_value = a * b / c + value_breakpoint.value_min
+        return current_value
 
     def get_breakpoints(self, value_type, sensor_value):
         return Breakpoints.query.filter(Breakpoints.value_min <= sensor_value, Breakpoints.value_max >=
                                         sensor_value, Breakpoints.sensor_value_type_id == value_type).first()
+
+    def save_area_data(self, record_aqi, values):
+        v = {}
+        for key in values:
+            if not isinstance(key, str):
+                v[key.type] = values[key]
+            else:
+                v[key] = values[key]
+
+        area = AreaModel(
+            aqi=record_aqi,
+            **v
+        )
+        self.db.session.add(area)
+        self.db.session.commit()
 
 
 if __name__ == '__main__':
@@ -121,4 +119,4 @@ if __name__ == '__main__':
     app.app_context().push()
 
     calc = AQICalculator(db)
-    result = calc.calculate_aqi()
+    result = calc.execute()

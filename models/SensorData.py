@@ -93,5 +93,4 @@ class SensorDataModel(db.Model):
 
     def as_dict(self):
         r = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        r['recorded'] = str(r['recorded'])
         return r
