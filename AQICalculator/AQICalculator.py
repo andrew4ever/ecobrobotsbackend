@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 from os import environ
 
@@ -31,6 +32,9 @@ class AQICalculator:
 
             for value_type, value in values.items():
                 current_aqi = self.calculate_aqi(value_type, value)
+
+                if current_aqi is False:
+                    continue
 
                 if isinstance(value_type, SensorValueTypeModel) \
                         and value_type.type in self._aqi_value_types:
@@ -81,6 +85,9 @@ class AQICalculator:
     def calculate_aqi(self, value_type, value):
         if not isinstance(value_type, SensorValueTypeModel)\
                 or not value_type.type in self._value_types:
+            return False
+
+        if math.isnan(value):
             return False
 
         value_breakpoint = self.get_breakpoints(
