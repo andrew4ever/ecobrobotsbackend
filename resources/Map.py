@@ -10,19 +10,21 @@ from sqlalchemy import desc
 class Map(Resource):
     def get(self):
         aqi_records = []
-        sensors = SensorModel.query.all()
+        sensor_ids = set([sensor.external_id
+                          for sensor in SensorModel.query.all()
+                          ])
         maxdate = datetime.now() - timedelta(
             hours=int(environ.get('MAX_RECORD_HOURS'))
         )
 
-        for sensor in sensors:
+        for sensor in sensor_ids:
             aqi_record = AreaModel.query \
                 .order_by(
                     AreaModel.created.desc()
                 ).filter(
                     AreaModel.created >= maxdate
                 ).filter_by(
-                    sensor_id=sensor.external_id
+                    sensor_id=sensor
                 ).first()
 
             if aqi_record:

@@ -23,16 +23,23 @@ class Area(Resource):
             except:
                 args = [(i[0], i[1][0]) for i in args]
 
-            latitude, longitude = args[0][1], args[1][1]
+            latitude, longitude = \
+                args[0][1].ljust(9, '0'), \
+                args[1][1].ljust(9, '0')
+
             area = AreaModel.query \
-                .filter_by(latitude=latitude) \
-                .filter_by(longitude=longitude) \
-                .order_by(desc(AreaModel.created)).first()
+                .order_by(
+                    AreaModel.created.desc()
+                ).filter_by(
+                    latitude=latitude
+                ).filter_by(
+                    longitude=longitude
+                ).first()
 
             if not area:
                 return {'code': 404, 'message': 'Area not found'}, 404
 
         except:
-            return {'code': 404, 'message': 'Area not found'}, 404
+            return {'code': 500, 'message': 'Internal Server Error'}, 500
 
         return convert_types_to_names(area)
