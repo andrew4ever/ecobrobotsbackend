@@ -23,7 +23,10 @@ class Area(Resource):
             except:
                 args = [(i[0], i[1][0]) for i in args]
 
-            latitude, longitude = args[0][1], args[1][1]
+            latitude, longitude = \
+                args[0][1].ljust(9, '0'), \
+                args[1][1].ljust(9, '0')
+
             area = AreaModel.query \
                 .order_by(
                     AreaModel.created.desc()
