@@ -73,10 +73,11 @@ class AQICalculator:
                 SensorValueTypeModel.type == value_type).first()
 
             if values.get(value_type, None):
+                value_float = float(values[value_type])
                 result[type_data] = min(
-                    float(values[value_type]),
+                    value_float,
                     float(type_data.max_possible_value)
-                )
+                ) if not math.isnan(value_float) else None
 
         result['latitude'] = values['latitude']
         result['longitude'] = values['longitude']
@@ -87,7 +88,8 @@ class AQICalculator:
                 or not value_type.type in self._value_types:
             return False
 
-        if math.isnan(value):
+        if value is None \
+                or math.isnan(value):
             return False
 
         value_breakpoint = self.get_breakpoints(
