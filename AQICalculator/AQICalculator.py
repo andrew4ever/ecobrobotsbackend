@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 from os import environ
 
@@ -31,6 +32,9 @@ class AQICalculator:
 
             for value_type, value in values.items():
                 current_aqi = self.calculate_aqi(value_type, value)
+
+                if current_aqi is False:
+                    continue
 
                 if isinstance(value_type, SensorValueTypeModel) \
                         and value_type.type in self._aqi_value_types:
@@ -83,6 +87,9 @@ class AQICalculator:
                 or not value_type.type in self._value_types:
             return False
 
+        if math.isnan(value):
+            return False
+
         value_breakpoint = self.get_breakpoints(
             value_type.id, value)
 
@@ -97,8 +104,11 @@ class AQICalculator:
         return current_value
 
     def get_breakpoints(self, value_type, sensor_value):
-        return Breakpoints.query.filter(Breakpoints.value_min <= sensor_value, Breakpoints.value_max >=
-                                        sensor_value, Breakpoints.sensor_value_type_id == value_type).first()
+        return Breakpoints.query.filter(
+            Breakpoints.value_min <= sensor_value,
+            Breakpoints.value_max >= sensor_value,
+            Breakpoints.sensor_value_type_id == value_type
+        ).first()
 
     def save_area_data(self, record_aqi, values, sensor_id):
         v = {}
@@ -111,7 +121,7 @@ class AQICalculator:
         area = AreaModel(
             aqi=record_aqi,
             sensor_id=sensor_id,
-            ** v
+            **v
         )
         self.db.session.add(area)
         self.db.session.commit()
